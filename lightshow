@@ -41,6 +41,17 @@ our $sock = IO::Socket::INET->new(
 if ($cmd eq 'on') {
 	lightdo($mode=='color'?"\x22\x00\x55":"\x35\x00\x55");
 } elsif ($cmd eq 'off') {
-	say 'off!';
 	lightdo($mode=='color'?"\x21\x00\x55":"\x39\x00\x55");
+} elsif ($cmd eq 'color') {
+	die "Only available in color mode" if ($mode != 'color');
+	my $color = int(shift);
+	die "Invalid color code: must be between 0 and 255" if ($color < 0 || $color > 255);
+	lightdo("\x20" . chr($color) . "\x55");
+} elsif ($cmd eq 'cycle') {
+	die "Only available in color mode" if ($mode != 'color');
+	for (1..255) {
+		say "Color: $_";
+		lightdo("\x20" . chr($_) . "\x55");
+		sleep 1;
+	}
 }
