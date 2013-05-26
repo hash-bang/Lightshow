@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+# Header {{{
+package lightshow;
+our $VERSION = '0.1.0';
+
+use feature say;
+use IO::Handle;
+use IO::Socket;
+use Getopt::Long;
+Getopt::Long::Configure('bundling', 'ignorecase_always', 'pass_through');
+STDERR->autoflush(1); # } Flush the output DIRECTLY to the output buffer without caching
+STDOUT->autoflush(1); # }
+# }}}
+# Command line options loading {{{
+my $mode = 'color';
+GetOptions(
+	# Global options
+	'dryrun|n' => \$dryrun,
+	'verbose|v+' => \$verbose,
+
+	'mode|m=s' => \$mode,
+);
+
+my $cmd = shift; # Extract what command we should work with
+# }}} Command line options loading
+# Functions {{{
+sub lightdo {
+	our $sock;
+	my $string = shift;
+	$sock->send($string);
+}
+# }}}
+# Sock init {{{
+our $sock = IO::Socket::INET->new(
+	Proto => 'udp',
+	PeerPort => 50000,
+	PeerAddr => '10.0.0.100',
+) or say 'Could not open socket';
+# }}}
+
+if ($cmd eq 'on') {
+	lightdo($mode=='color'?"\x22\x00\x55":"\x35\x00\x55");
+} elsif ($cmd eq 'off') {
+	say 'off!';
+	lightdo($mode=='color'?"\x21\x00\x55":"\x39\x00\x55");
+}
