@@ -4,9 +4,10 @@ package lightshow;
 our $VERSION = '0.1.0';
 
 use feature say;
+use Getopt::Long;
+use File::Basename;
 use IO::Handle;
 use IO::Socket;
-use Getopt::Long;
 Getopt::Long::Configure('bundling', 'ignorecase_always', 'pass_through');
 STDERR->autoflush(1); # } Flush the output DIRECTLY to the output buffer without caching
 STDOUT->autoflush(1); # }
@@ -37,21 +38,74 @@ our $sock = IO::Socket::INET->new(
 	PeerAddr => '10.0.0.100',
 ) or say 'Could not open socket';
 # }}}
+# Convenience functions {{{
+our $lightshow = 1;
+
+sub lightcolor {
+	my $color = int(shift);
+	say "Invalid color code: must be between 0 and 255" if ($color < 0 || $color > 255);
+	lightdo("\x20" . chr($color) . "\x55");
+}
+
+sub lighton {
+	lightdo($mode=='color'?"\x22\x00\x55":"\x35\x00\x55");
+}
+
+sub lightoff {
+	lightdo($mode=='color'?"\x21\x00\x55":"\x39\x00\x55");
+}
+
+sub lightbright {
+	my $direction = shift;
+	if ($direction eq 'down') {
+		lightdo($mode=='color'?"\x24\x00\x55":"\x34\x00\x55");
+	} elsif ($direction eq 'up') {
+		lightdo($mode=='color'?"\x23\x00\x55":"\x3c\x00\x55");
+	} elsif ($direction =~ /^dim/) {
+		for (1..($mode=='color'?9:10)) {
+			lightbright('down');
+			lightsleep();
+		}
+	} elsif ($direction =~ /^bright/) {
+		for (1..($mode=='color'?9:10)) {
+			lightbright('up');
+			lightsleep();
+		}
+	}
+}
+
+sub lightsleep {
+	sleep 1; # FIXME: This needs tuning
+}
+# }}}
 
 if ($cmd eq 'on') {
-	lightdo($mode=='color'?"\x22\x00\x55":"\x35\x00\x55");
+	lighton();
 } elsif ($cmd eq 'off') {
-	lightdo($mode=='color'?"\x21\x00\x55":"\x39\x00\x55");
+	lightoff();
 } elsif ($cmd eq 'color') {
 	die "Only available in color mode" if ($mode != 'color');
-	my $color = int(shift);
-	die "Invalid color code: must be between 0 and 255" if ($color < 0 || $color > 255);
-	lightdo("\x20" . chr($color) . "\x55");
+	lightcolor(shift);
+} elsif ($cmd eq 'dim') {
+	lightbright('down');
+} elsif ($cmd eq 'dimest') {
+	lightbright('dimest');
+} elsif ($cmd eq 'bright') {
+	lightbright('up');
+} elsif ($cmd eq 'brightest') {
+	lightbright('brightest');
 } elsif ($cmd eq 'cycle') {
 	die "Only available in color mode" if ($mode != 'color');
 	for (1..255) {
 		say "Color: $_";
-		lightdo("\x20" . chr($_) . "\x55");
+		lightcolor($_);
 		sleep 1;
 	}
+} elsif ($cmd eq 'list') {
+	for (glob('programs/*')) {
+		say basename($_);
+	}
+} else { # Probably a program
+	die "Unknown command or program: $cmd" unless -f "programs/$cmd";
+	require "programs/$cmd";
 }
