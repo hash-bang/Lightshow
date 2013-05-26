@@ -94,13 +94,6 @@ if ($cmd eq 'on') {
 	lightbright('up');
 } elsif ($cmd eq 'brightest') {
 	lightbright('brightest');
-} elsif ($cmd eq 'cycle') {
-	die "Only available in color mode" if ($mode != 'color');
-	for (1..255) {
-		say "Color: $_";
-		lightcolor($_);
-		sleep 1;
-	}
 } elsif ($cmd eq 'list') {
 	for (glob('programs/*')) {
 		say basename($_);
