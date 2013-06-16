@@ -195,12 +195,12 @@ STDOUT->autoflush(1); # }
 # }}}
 # Config loading {{{
 my $cfgfile;
-if (-e "/etc/lightshow") {
-	$cfgfile = "/etc/lightshow";
+if (-e "/etc/lightshowrc") {
+	$cfgfile = "/etc/lightshowrc";
 } elsif (-e "$ENV{HOME}/.lightshowrc") {
 	$cfgfile = "$ENV{HOME}/.lightshowrc";
 } else {
-	fatal("No config file could be found at either /etc/lightshow or \$HOME/.lightshowrc");
+	fatal("No config file could be found at either /etc/lightshowrc or \$HOME/.lightshowrc");
 }
 
 our $verbose = 0;
