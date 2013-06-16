@@ -1,0 +1,12 @@
+[GLOBAL]
+profile = Downstairs
+
+[Upstairs]
+address = 10.0.0.101
+port = 50000
+mode = white
+
+[Downstairs]
+address = 10.0.0.102
+port = 50000
+mode = color
