@@ -13,15 +13,7 @@ lightshow - Manage color and dimmable LEDs
 	lightshow list
 	lightshow <program>
 
-=back
-
 =head1 COMMANDS
-
-=over 8
-
-=item B<on|off|dim|dimest|bright|brightest>
-
-Send a simple command to lightshow.
 
 =over 8
 
@@ -48,8 +40,6 @@ Brighten all lights by one dim step.
 =item B<dimest>
 
 Birghten all lights to the highest setting.
-
-=back
 
 =item B<color [color-number]>
 
@@ -102,6 +92,8 @@ When enabled Lightshow will continue as normal but no actual call to the remote 
 
 Be more verbose when outputting information to STDERR.
 Specify multiple times to increase verbosity.
+
+=back
 
 =head1 DESCRIPTION
 
