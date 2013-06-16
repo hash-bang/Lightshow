@@ -1,4 +1,185 @@
 #!/usr/bin/perl
+# POD {{{
+=head1 NAME
+
+lightshow - Manage color and dimmable LEDs
+
+=head1 SYNOPSIS
+
+	lightshow <command> [options] [@profile]
+
+	lightshow <on|off|dim|dimest|bright|brightest>
+	lightshow color <color-number>
+	lightshow list
+	lightshow <program>
+
+=back
+
+=head1 COMMANDS
+
+=over 8
+
+=item B<on|off|dim|dimest|bright|brightest>
+
+Send a simple command to lightshow.
+
+=over 8
+
+=item B<on>
+
+Turn all lights on.
+
+=item B<off>
+
+Turn all lights off.
+
+=item B<dim>
+
+Dim all lights by one dim step.
+
+=item B<dimest>
+
+Dim all lights to the lowest setting.
+
+=item B<bright>
+
+Brighten all lights by one dim step.
+
+=item B<dimest>
+
+Birghten all lights to the highest setting.
+
+=back
+
+=item B<color [color-number]>
+
+Set all lights to the color code specified.
+The color code must be between 0 and 255 or 'white'.
+
+=item B<list>
+
+List all available macro programs.
+
+=item B<<program>>
+
+Run a macro program.
+
+You can use 'list' to get a list of available programs.
+
+=item B<version>
+
+Display various version informaiton about the lightshow program.
+
+=back
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<[@profile]>
+
+Specifies which profile to use when addressing Lightshow.
+
+	# Display version information fod the default profile
+	
+	lightshow version
+
+
+	# Use profile 'upstairs' specifically
+
+	lightshow version @upstairs
+
+=item B<--dryrun>
+
+=item B<-n>
+
+Dry run mode.
+When enabled Lightshow will continue as normal but no actual call to the remote interface is made. This can be useful for debugging when combined with '--verbose'.
+
+=item B<-v>
+
+=item B<--verbose>
+
+Be more verbose when outputting information to STDERR.
+Specify multiple times to increase verbosity.
+
+=head1 DESCRIPTION
+
+A command line tool for the manipulation LED lighting systems.
+
+=head1 EXAMPLES
+
+=over
+
+=item B<lightshow on>
+
+Turn on all lights.
+
+=item B<lightshow color 50 @upstairs>
+
+Set all lights under the profile 'upstairs' to color number 50.
+
+=item B<lightshow strobe>
+
+Run the macro program 'strobe' on the default profile.
+
+=back
+
+=head1 FILES
+
+=over 8
+
+=item B</etc/lightshowrc>
+
+System global Lightshow file.
+
+=item B<.vmmrc>
+
+Lightshow config file for the local user.
+
+=back
+
+=head1 CONFIG
+
+The /etc/lightshowrc and .lightshowrc files will be processed to determine Lightshow's configuration, the latter file taking precedence.
+
+The layout of the config file spcifies which profiles to use.
+
+	[GLOBAL]
+	profile = Downstairs
+	protocol = udp
+
+	[Upstairs]
+	address = 10.0.0.101
+	port = 50000
+	mode = white
+
+	[Downstairs]
+	address = 10.0.0.102
+	port = 50000
+	mode = color
+
+
+=head1 INSTALLATION
+
+VMM requires a few external modules before it can work correctly. Follow the following stages to get everything working.
+
+Install all the required CPAN modules:
+	
+	cpan Config::IniFiles Getopt::Long
+
+=head1 BUGS
+
+Quite probably.
+
+Please report to https://github.com/hash-bang/Lightshow if found.
+
+=head1 AUTHOR
+
+Matt Carter <m@ttcarter.com>
+
+=cut
+# }}} POD
 # Header {{{
 package lightshow;
 our $VERSION = '0.1.0';
