@@ -1,5 +1,6 @@
 [GLOBAL]
 profile = Downstairs
+protocol = udp
 
 [Upstairs]
 address = 10.0.0.101
