@@ -242,6 +242,7 @@ if ($profile) { # User wants to select a specific profile
 fatal("No address specified for profile $profile") unless $cfg->exists($profile, 'address');
 fatal("No port specified for profile $profile") unless $cfg->exists($profile, 'port');
 fatal("No mode specified for profile $profile - must be 'color' or 'white'") unless $cfg->exists($profile, 'mode');
+fatal("No protocol specified for profile $profile - must be 'udp' or 'tcp'") unless $cfg->exists($profile, 'protocol');
 
 # Import various options from the config file. These can be overriden in the GetOptions call below.
 $verbose = $cfg->val($profile, 'verbose', 0); # Late import which overrides the 'global/verbose' setting now we know what profile to use
@@ -340,10 +341,10 @@ sub lightsleep {
 # Sock init {{{
 say(3, "Connecting to " . $cfg->val($profile, 'address') . ':' . $cfg->val($profile, 'port'));
 our $sock = IO::Socket::INET->new(
-	Proto => 'udp',
-	PeerPort => 50000,
-	PeerAddr => '10.0.0.100',
-) or say 'Could not open socket';
+	Proto => $cfg->val($profile, 'protocol', 0),
+	PeerPort => $cfg->val($profile, 'port', 0),
+	PeerAddr => $cfg->val($profile, 'address', 0),
+) or fatal('Could not open socket');
 # }}}
 # Commands {{{
 if ($cmd eq 'on') {
@@ -367,6 +368,8 @@ if ($cmd eq 'on') {
 	}
 } elsif ($cmd eq 'config') {
 	$cfg->OutputConfig();
+} elsif ($cmd eq 'version') {
+	say(0, "Lightshow v$VERSION");
 } elsif ($cmd eq '') {
 	say(0, 'No command given');
 } else { # Probably a program
