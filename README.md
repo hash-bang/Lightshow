@@ -120,11 +120,4 @@ BUGS
 AUTHOR
     Matt Carter <m@ttcarter.com>
 
-POD ERRORS
-    Hey! The above document had some coding errors, which are explained
-    below:
-
-    Around line 96:
-        You forgot a '=back' before '=head1'
-
 ```
