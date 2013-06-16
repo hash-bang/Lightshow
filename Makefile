@@ -1,6 +1,8 @@
 SCRIPT := lightshow
 VERSION := $(shell perl -MExtUtils::MakeMaker -le 'print MM->parse_version(shift)' $(SCRIPT))
 
+.PHONY: README.md
+
 # Which directory path to use when creating the deb file
 DEBFACTORY := Distro/Deb
 
