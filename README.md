@@ -17,20 +17,17 @@ SYNOPSIS
             lightshow <program>
 
 COMMANDS
-    on|off|dim|dimest|bright|brightest
-            Send a simple command to lightshow.
+    on      Turn all lights on.
 
-            on      Turn all lights on.
+    off     Turn all lights off.
 
-            off     Turn all lights off.
+    dim     Dim all lights by one dim step.
 
-            dim     Dim all lights by one dim step.
+    dimest  Dim all lights to the lowest setting.
 
-            dimest  Dim all lights to the lowest setting.
+    bright  Brighten all lights by one dim step.
 
-            bright  Brighten all lights by one dim step.
-
-            dimest  Birghten all lights to the highest setting.
+    dimest  Birghten all lights to the highest setting.
 
     color [color-number]
             Set all lights to the color code specified. The color code must
@@ -127,10 +124,7 @@ POD ERRORS
     Hey! The above document had some coding errors, which are explained
     below:
 
-    Around line 16:
-        =back without =over
-
-    Around line 106:
+    Around line 96:
         You forgot a '=back' before '=head1'
 
 ```
