@@ -365,7 +365,18 @@ if ($cmd eq 'on') {
 } elsif ($cmd eq 'version') {
 	say(0, "Lightshow v$VERSION");
 } elsif ($cmd eq '') {
-	say(0, 'No command given');
+	say(0, "Lightshow v$VERSION");
+	say(0, "");
+	say(0, "Built-in commands:");
+	say(0, " * on | off | dim | dimest | bright | brightest");
+	say(0, " * color <color-number>");
+	say(0, " * list");
+	say(0, "Macro programs:");
+	for (glob('programs/*')) {
+		$_ = basename($_);
+		s/\.ls$//;
+		say(0, " * $_");
+	}
 } else { # Probably a program
 	fatal("Unknown command or program: $cmd") unless -f "programs/$cmd.ls";
 	require "programs/$cmd.ls";
