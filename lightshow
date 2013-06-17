@@ -140,6 +140,9 @@ The layout of the config file spcifies which profiles to use.
 	[GLOBAL]
 	profile = Downstairs
 	protocol = udp
+	syslog = off
+	kill = off
+	verbose = 0
 
 	[Upstairs]
 	address = 10.0.0.101
@@ -151,6 +154,41 @@ The layout of the config file spcifies which profiles to use.
 	port = 50000
 	mode = color
 
+=over 8
+
+=item B<address>
+
+The IP address of the server to use.
+
+=item B<kill>
+
+Attempt to find and kill all other versions of Lightshow before continuing.
+
+=item B<mode>
+
+Which mode to support. Valid options are: color and white
+
+=item B<port>
+
+The port to use on the remote server.
+
+=item B<profile>
+
+Specify the default profile to use if none is explicity stated.
+
+=item B<protocol>
+
+Set the protocol to use. Valid options are: tcp and udp
+
+=item B<verbose>
+
+The amount of verbosity to use.
+
+=item B<syslog>
+
+Also log all output to SysLog.
+
+=back
 
 =head1 INSTALLATION
 

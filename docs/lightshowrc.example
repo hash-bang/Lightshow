@@ -1,7 +1,9 @@
 [GLOBAL]
 profile = Downstairs
 protocol = udp
-syslog = 0
+syslog = off
+kill = off
+verbose = 0
 
 [Upstairs]
 address = 10.0.0.101
