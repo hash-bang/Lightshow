@@ -48,13 +48,13 @@ The color code must be between 0 and 255 or 'white'.
 
 =item B<list>
 
-List all available macro programs.
+List all available macros.
 
 =item B<<program>>
 
 Run a macro program.
 
-You can use 'list' to get a list of available programs.
+You can use 'list' to get a list of available macros.
 
 =item B<version>
 
@@ -366,7 +366,7 @@ if ($cmd eq 'on') {
 } elsif ($cmd eq 'brightest') {
 	lightbright('brightest');
 } elsif ($cmd eq 'list') {
-	for (glob('programs/*')) {
+	for (glob('macros/*.ls')) {
 		$_ = basename($_);
 		s/\.ls$//;
 		say(0, $_);
@@ -382,14 +382,18 @@ if ($cmd eq 'on') {
 	say(0, " * on | off | dim | dimest | bright | brightest");
 	say(0, " * color <color-number>");
 	say(0, " * list");
-	say(0, "Macro programs:");
-	for (glob('programs/*')) {
+	say(0, "Macros:");
+	for (glob('macros/*.ls')) {
 		$_ = basename($_);
 		s/\.ls$//;
 		say(0, " * $_");
 	}
+} elsif ($cmd =~ m/\.ls$/ && -f $cmd) { # Raw pointer to a program?
+	say(1, "Running macro: $cmd");
+	require $cmd;
 } else { # Probably a program
-	fatal("Unknown command or program: $cmd") unless -f "programs/$cmd.ls";
-	require "programs/$cmd.ls";
+	fatal("Unknown command or program: $cmd") unless -f "macros/$cmd.ls";
+	say(1, "Running macro: $cmd");
+	require "macros/$cmd.ls";
 }
 # }}}
