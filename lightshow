@@ -305,8 +305,10 @@ sub say {
 	our $verbose;
 	our $syslog;
 	my $verbosity = shift;
-	print STDERR @_, "\n" if $verbose >= $verbosity;
-	syslog('debug', @_) if $syslog;
+	if ($verbose >= $verbosity) {
+		print STDERR @_, "\n";
+		syslog('debug', @_) if $syslog;
+	}
 }
 
 sub pause {
