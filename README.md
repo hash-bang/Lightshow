@@ -33,12 +33,12 @@ COMMANDS
             Set all lights to the color code specified. The color code must
             be between 0 and 255 or 'white'.
 
-    list    List all available macro programs.
+    list    List all available macros.
 
     <program>
             Run a macro program.
 
-            You can use 'list' to get a list of available programs.
+            You can use 'list' to get a list of available macros.
 
     version Display various version informaiton about the lightshow program.
 
@@ -93,6 +93,8 @@ CONFIG
             [GLOBAL]
             profile = Downstairs
             protocol = udp
+            syslog = off
+            kill = off
 
             [Upstairs]
             address = 10.0.0.101
@@ -103,6 +105,22 @@ CONFIG
             address = 10.0.0.102
             port = 50000
             mode = color
+
+    address The IP address of the server to use.
+
+    kill    Attempt to find and kill all other versions of Lightshow before
+            continuing.
+
+    mode    Which mode to support. Valid options are: color and white
+
+    port    The port to use on the remote server.
+
+    profile Specify the default profile to use if none is explicity stated.
+
+    protocol
+            Set the protocol to use. Valid options are: tcp and udp
+
+    syslog  Also log all output to SysLog.
 
 INSTALLATION
     VMM requires a few external modules before it can work correctly. Follow
