@@ -8,5 +8,4 @@ while (1) {
 	$_ = $colors[rand(scalar(@colors))];
 	say(2, "Color: $_");
 	lightcolor($_);
-	lightsleep();
 }

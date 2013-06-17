@@ -330,6 +330,7 @@ sub lightdo {
 	our $sock;
 	my $string = shift;
 	$sock->send($string);
+	sleep 1; # FIXME: This is stupid
 }
 # }}}
 # Convenience functions {{{
@@ -358,24 +359,22 @@ sub lightbright {
 	our $mode;
 	my $direction = shift;
 	if ($direction eq 'down') {
+		say(3, 'Stepping brightness down');
 		lightdo($mode=='color'?"\x24\x00\x55":"\x34\x00\x55");
 	} elsif ($direction eq 'up') {
+		say(3, 'Stepping brightness up');
 		lightdo($mode=='color'?"\x23\x00\x55":"\x3c\x00\x55");
 	} elsif ($direction =~ /^dim/) {
+		say(3, 'Stepping brightness to lowest');
 		for (1..($mode=='color'?9:10)) {
 			lightbright('down');
-			lightsleep();
 		}
 	} elsif ($direction =~ /^bright/) {
+		say(3, 'Stepping brightness to highest');
 		for (1..($mode=='color'?9:10)) {
 			lightbright('up');
-			lightsleep();
 		}
 	}
-}
-
-sub lightsleep {
-	sleep 1; # FIXME: This needs tuning
 }
 # }}}
 # }}}
