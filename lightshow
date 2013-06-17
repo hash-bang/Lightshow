@@ -356,7 +356,9 @@ if ($cmd eq 'on') {
 	lightbright('brightest');
 } elsif ($cmd eq 'list') {
 	for (glob('programs/*')) {
-		say(0, basename($_));
+		$_ = basename($_);
+		s/\.ls$//;
+		say(0, $_);
 	}
 } elsif ($cmd eq 'config') {
 	$cfg->OutputConfig();
@@ -365,7 +367,7 @@ if ($cmd eq 'on') {
 } elsif ($cmd eq '') {
 	say(0, 'No command given');
 } else { # Probably a program
-	fatal("Unknown command or program: $cmd") unless -f "programs/$cmd";
-	require "programs/$cmd";
+	fatal("Unknown command or program: $cmd") unless -f "programs/$cmd.ls";
+	require "programs/$cmd.ls";
 }
 # }}}
