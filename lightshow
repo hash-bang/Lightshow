@@ -342,6 +342,8 @@ sub lightsleep {
 # }}}
 # }}}
 # Sock init {{{
+system("ps -C lightshow -o pid= | grep -v $$ | xargs -r kill") if enabled($cfg->val($profile, 'kill', 'off'));
+
 say(3, "Connecting to " . $cfg->val($profile, 'address') . ':' . $cfg->val($profile, 'port'));
 our $sock = IO::Socket::INET->new(
 	Proto => $cfg->val($profile, 'protocol', 0),
