@@ -6,3 +6,4 @@ lightbright('dimmest');
 for (1..9) {
 	lightbright('up');
 }
+1;

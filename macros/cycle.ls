@@ -5,3 +5,4 @@ for (1..255) {
 	say(2, "Color: $_");
 	lightcolor($_);
 }
+1;

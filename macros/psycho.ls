@@ -4,3 +4,4 @@ lighton();
 while (1) {
 	lightcolor(rand(255));
 }
+1;
