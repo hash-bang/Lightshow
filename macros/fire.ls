@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 die "Must be run within lightshow" unless defined lightshow;
 
-my @colors = 11..40;
+my @colors = 150..175;
 
 lighton();
 while (1) {
