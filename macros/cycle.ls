@@ -2,7 +2,7 @@
 die "Must be run within lightshow" unless defined lightshow;
 lighton();
 for (1..255) {
-	print "Color: $_\n";
+	say(2, "Color: $_");
 	lightcolor($_);
 	lightsleep();
 }
