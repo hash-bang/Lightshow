@@ -220,6 +220,7 @@ use File::Basename;
 use IO::Handle;
 use IO::Socket;
 use Sys::Syslog qw/syslog/;
+use Time::HiRes qw/usleep/;
 Getopt::Long::Configure('bundling', 'ignorecase_always', 'pass_through');
 STDERR->autoflush(1); # } Flush the output DIRECTLY to the output buffer without caching
 STDOUT->autoflush(1); # }
@@ -332,7 +333,7 @@ sub lightdo {
 	our $sock;
 	my $string = shift;
 	$sock->send($string);
-	sleep 1; # FIXME: This is stupid
+	usleep(30000); # FIXME: Still a crappy way to do things
 }
 # }}}
 # Convenience functions {{{
