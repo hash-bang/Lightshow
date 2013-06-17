@@ -95,6 +95,7 @@ CONFIG
             protocol = udp
             syslog = off
             kill = off
+            verbose = 0
 
             [Upstairs]
             address = 10.0.0.101
@@ -119,6 +120,8 @@ CONFIG
 
     protocol
             Set the protocol to use. Valid options are: tcp and udp
+
+    verbose The amount of verbosity to use.
 
     syslog  Also log all output to SysLog.
 
