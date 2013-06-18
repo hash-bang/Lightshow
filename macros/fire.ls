@@ -5,8 +5,7 @@ my @colors = 150..175;
 
 lighton();
 while (1) {
-	$_ = $colors[rand(scalar(@colors))];
-	say(2, "Color: $_");
-	lightcolor($_);
+	lightcolor($colors[rand(scalar(@colors))]);
+	usleep(20000 + rand(100000));
 }
 1;

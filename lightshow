@@ -342,6 +342,7 @@ our $lightshow = 1;
 sub lightcolor {
 	my $color = int(shift);
 	if ($color >= 0 && $color <= 255) {
+		say(2, "Setting color: $color");
 		lightdo("\x20" . chr($color) . "\x55");
 	} else {
 		say(1, "Invalid color code: must be between 0 and 255") ;
@@ -350,32 +351,38 @@ sub lightcolor {
 
 sub lighton {
 	our $mode;
+	say(2, "Lights on");
 	lightdo($mode=='color'?"\x22\x00\x55":"\x35\x00\x55");
 }
 
 sub lightoff {
 	our $mode;
+	say(2, "Lights off");
 	lightdo($mode=='color'?"\x21\x00\x55":"\x39\x00\x55");
+}
+
+sub lightsteps {
+	return $mode=='color' ? 9: 10;
 }
 
 sub lightbright {
 	our $mode;
 	my $direction = shift;
-	if ($direction eq 'down') {
+	if ($direction =~ /^(dim|dimm?er|down)$/) {
 		say(3, 'Stepping brightness down');
 		lightdo($mode=='color'?"\x24\x00\x55":"\x34\x00\x55");
-	} elsif ($direction eq 'up') {
+	} elsif ($direction =~ /^(bright|brighter|up)$/) {
 		say(3, 'Stepping brightness up');
 		lightdo($mode=='color'?"\x23\x00\x55":"\x3c\x00\x55");
-	} elsif ($direction =~ /^dim/) {
+	} elsif ($direction =~ /^(dimm?est|lowest)$/) {
 		say(3, 'Stepping brightness to lowest');
-		for (1..($mode=='color'?9:10)) {
-			lightbright('down');
+		for (1..lightsteps()) {
+			lightbright('dim');
 		}
-	} elsif ($direction =~ /^bright/) {
+	} elsif ($direction =~ /^(brightest|highest)$/) {
 		say(3, 'Stepping brightness to highest');
-		for (1..($mode=='color'?9:10)) {
-			lightbright('up');
+		for (1..lightsteps()) {
+			lightbright('bright');
 		}
 	}
 }
