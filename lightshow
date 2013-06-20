@@ -345,6 +345,10 @@ sub lightdo {
 # Convenience functions {{{
 our $lightshow = 1;
 
+sub lightkill {
+	system("ps -C lightshow -o pid= | grep -v $$ | xargs -r kill");
+}
+
 sub lightcolor {
 	my $color = int(shift);
 	if ($color >= 0 && $color <= 255) {
@@ -457,6 +461,7 @@ sub lightserver {
 				print $cgi->header(-type => 'application/json');
 				print to_json({
 				      action => 'list',
+				      status => 'success',
 				      macros => [lightshow::lightmacros()],
 				});
 			} elsif (my ($macro) = ($path =~ m/^\/json\/run\/(.*)$/)) {
@@ -470,12 +475,20 @@ sub lightserver {
 				} elsif ($pid > 0) { # Parent - responds with JSON
 					print to_json({
 					      action => 'run',
+					      status => $exists ? 'success' : 'failed',
 					      macro => $macro,
-					      result => $exists ? 'success' : 'failed',
 					});
 				} else {
 					lightshow::fatal("Fork command failed with code $pid");
 				}
+			} elsif ($path =~ m/^\/json\/stop/) {
+				lightshow::lightkill();
+				print "HTTP/1.0 200 OK\r\n";
+				print $cgi->header(-type => 'application/json');
+				print to_json({
+				      action => 'stop',
+				      status => 'success',
+				});
 			} else {
 				print "HTTP/1.0 404 Not found\r\n";
 				print $cgi->header,
@@ -492,7 +505,7 @@ sub lightserver {
 }
 # }}}
 # Sock init {{{
-system("ps -C lightshow -o pid= | grep -v $$ | xargs -r kill") if enabled($cfg->val($profile, 'kill', 'off'));
+lightkill() if enabled($cfg->val($profile, 'kill', 'off'));
 
 say(3, "Connecting to " . $cfg->val($profile, 'address') . ':' . $cfg->val($profile, 'port'));
 our $sock = IO::Socket::INET->new(
