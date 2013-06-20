@@ -37,3 +37,8 @@ deb:
 	gzip -f $(DEBFACTORY)/usr/share/man/man1/$(SCRIPT).1
 	dpkg -b $(DEBFACTORY) $(SCRIPT)_$(VERSION).deb
 	-rm -r $(DEBFACTORY)
+
+test-server:
+	-killall lightshow
+	./lightshow server
+	wget -qF -O - http://localhost:8080/json/list
