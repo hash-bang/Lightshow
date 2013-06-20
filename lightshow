@@ -408,6 +408,7 @@ sub lightmacros {
 
 sub lightmacro {
 	my $macro = shift;
+	my $dryrun = shift;
 	our @macropath;
 
 	my $macrofile;
@@ -426,7 +427,8 @@ sub lightmacro {
 
 	if ($macrofile) {
 		say(1, "Running macro: $macro ($macrofile)");
-		require $macrofile;
+		require $macrofile unless $dryrun;
+		say(3, "Finished running macro: $macro");
 		return 1;
 	} else {
 		say(3, "Attempted to run non-existant macro: $macro");
@@ -439,7 +441,7 @@ sub lightmacro {
 sub lightserver {
 	say(3, "Loading LightShow server functionality");
 	{
-		package MyWebServer;
+		package LightShowServer;
 		use JSON;
 		use HTTP::Server::Simple::CGI;
 		use base qw(HTTP::Server::Simple::CGI);
@@ -457,6 +459,23 @@ sub lightserver {
 				      action => 'list',
 				      macros => [lightshow::lightmacros()],
 				});
+			} elsif (my ($macro) = ($path =~ m/^\/json\/run\/(.*)$/)) {
+				print "HTTP/1.0 200 OK\r\n";
+				print $cgi->header(-type => 'application/json');
+				my $exists = lightshow::lightmacro($macro, 1); # Dry run to determine if the macro exists
+				my $pid = fork;
+				if ($pid == 0) { # Child - runs macro
+					lightshow::lightmacro($macro);
+					exit 1;
+				} elsif ($pid > 0) { # Parent - responds with JSON
+					print to_json({
+					      action => 'run',
+					      macro => $macro,
+					      result => $exists ? 'success' : 'failed',
+					});
+				} else {
+					lightshow::fatal("Fork command failed with code $pid");
+				}
 			} else {
 				print "HTTP/1.0 404 Not found\r\n";
 				print $cgi->header,
@@ -467,8 +486,8 @@ sub lightserver {
 		}
 	}
 	 
-	say(0, "Starting LightShow server on port $server_port");
-	my $pid = MyWebServer->new($server_port)->background();
+	say(0, "Starting LightShow server on port $server_port...");
+	my $pid = LightShowServer->new($server_port)->background();
 	say(0, "Use 'kill $pid' to stop server.");
 }
 # }}}
