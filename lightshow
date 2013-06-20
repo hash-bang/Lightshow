@@ -235,6 +235,7 @@ if (-e "/etc/lightshowrc") {
 	fatal("No config file could be found at either /etc/lightshowrc or \$HOME/.lightshowrc");
 }
 
+our @macropath = ('/usr/share/lightshow/macros', "$ENV{HOME}/.lightshow/macros", "./macros");
 our $verbose = 0;
 my $cfg = Config::IniFiles->new(
 	-file => ($cfgfile ? $cfgfile : \*DATA), # Read defaults from __DATA__ section if we cant find a default file.
@@ -386,6 +387,47 @@ sub lightbright {
 		}
 	}
 }
+
+sub lightmacros {
+	our @macropath;
+	my %found;
+	for my $path (@macropath) {
+		for (glob("$path/*.ls")) {
+			$_ = basename($_);
+			s/\.ls$//;
+			$found{$_}++;
+		}
+	}
+	return sort keys %found;
+}
+
+sub lightmacro {
+	my $macro = shift;
+	our @macropath;
+
+	my $macrofile;
+	if (-f $macro) { # Is a real file pointer anyway
+		$macrofile = $macro;
+	} else { # Short code - might be a macro nested somewhere
+		$macro =~ s/\.ls$//; # Trim .ls prefix if its present
+		for my $dir (@macropath) {
+			my $path = "$dir/$macro.ls";
+			if (-f $path) {
+				$macrofile = $path;
+				break;
+			}
+		}
+	}
+
+	if ($macrofile) {
+		say(1, "Running macro: $macro ($macrofile)");
+		require $macrofile;
+		return 1;
+	} else {
+		say(3, "Attempted to run non-existant macro: $macro");
+		return 0;
+	}
+}
 # }}}
 # }}}
 # Sock init {{{
@@ -415,9 +457,7 @@ if ($cmd eq 'on') {
 } elsif ($cmd eq 'brightest') {
 	lightbright('brightest');
 } elsif ($cmd eq 'list') {
-	for (glob('macros/*.ls')) {
-		$_ = basename($_);
-		s/\.ls$//;
+	for (lightmacros()) {
 		say(0, $_);
 	}
 } elsif ($cmd eq 'config') {
@@ -432,17 +472,10 @@ if ($cmd eq 'on') {
 	say(0, " * color <color-number>");
 	say(0, " * list");
 	say(0, "Macros:");
-	for (glob('macros/*.ls')) {
-		$_ = basename($_);
-		s/\.ls$//;
-		say(0, " * $_");
-	}
-} elsif ($cmd =~ m/\.ls$/ && -f $cmd) { # Raw pointer to a program?
-	say(1, "Running macro: $cmd");
-	require $cmd;
-} else { # Probably a program
-	fatal("Unknown command or program: $cmd") unless -f "macros/$cmd.ls";
-	say(1, "Running macro: $cmd");
-	require "macros/$cmd.ls";
+	say(0, " * $_") foreach lightmacros();
+} elsif (-f $cmd) { # Raw pointer to a file (which could be a macro)?
+	lightmacro($cmd);
+} else { # Probably a macro
+	fatal("Unknown command or macro: $cmd") unless lightmacro($cmd);
 }
 # }}}
