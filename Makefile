@@ -39,6 +39,14 @@ deb:
 	-rm -r $(DEBFACTORY)
 
 test-server:
-	-killall lightshow
+	@-killall lightshow
 	./lightshow server
+	@echo
+	@echo
+	@echo "Test - /json/list:"
 	wget -qF -O - http://localhost:8080/json/list
+	@echo
+	@echo
+	@echo "Test - /json/run/fadein:"
+	wget -qF -O - http://localhost:8080/json/run/fadein
+	@echo
