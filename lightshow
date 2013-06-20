@@ -440,7 +440,7 @@ our $sock = IO::Socket::INET->new(
 	PeerAddr => $cfg->val($profile, 'address', 0),
 ) or fatal('Could not open socket');
 # }}}
-# Commands {{{
+# Command line commands {{{
 if ($cmd eq 'on') {
 	lighton();
 } elsif ($cmd eq 'off') {
