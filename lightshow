@@ -434,6 +434,7 @@ sub lightmacro {
 	}
 }
 # }}}
+# }}}
 # Server functionality {{{
 sub lightserver {
 	say(3, "Loading LightShow server functionality");
@@ -470,7 +471,6 @@ sub lightserver {
 	my $pid = MyWebServer->new($server_port)->background();
 	say(0, "Use 'kill $pid' to stop server.");
 }
-# }}}
 # }}}
 # Sock init {{{
 system("ps -C lightshow -o pid= | grep -v $$ | xargs -r kill") if enabled($cfg->val($profile, 'kill', 'off'));
