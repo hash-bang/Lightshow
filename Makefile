@@ -48,5 +48,5 @@ test-server:
 	@echo
 	@echo
 	@echo "Test - /json/run/fadein:"
-	wget -qF -O - http://localhost:8080/json/run/fadein
+	wget -qF -O - http://localhost:8080/json/run/fade-in
 	@echo
