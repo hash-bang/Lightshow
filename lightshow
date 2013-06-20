@@ -461,9 +461,7 @@ if ($cmd eq 'on') {
 } elsif ($cmd eq 'brightest') {
 	lightbright('brightest');
 } elsif ($cmd eq 'list') {
-	for (lightmacros()) {
-		say(0, $_);
-	}
+	say(0, $_) foreach lightmacros();
 } elsif ($cmd eq 'config') {
 	$cfg->OutputConfig();
 } elsif ($cmd eq 'version') {
