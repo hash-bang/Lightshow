@@ -125,9 +125,13 @@ Run the macro 'strobe' on the default profile.
 
 System global Lightshow file.
 
-=item B<.vmmrc>
+=item B<$HOME/.lightshowrc>
 
 Lightshow config file for the local user.
+
+=item B<$HOME/.lightshow/macros>
+
+Lightshow macro files for the local user.
 
 =back
 
