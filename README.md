@@ -14,7 +14,7 @@ SYNOPSIS
             lightshow <on|off|dim|dimest|bright|brightest>
             lightshow color <color-number>
             lightshow list
-            lightshow <program>
+            lightshow <macro>
 
 COMMANDS
     on      Turn all lights on.
@@ -35,12 +35,11 @@ COMMANDS
 
     list    List all available macros.
 
-    <program>
-            Run a macro program.
+    <macro> Run a Lightshow macro.
 
             You can use 'list' to get a list of available macros.
 
-    version Display various version informaiton about the lightshow program.
+    version Display various version informaiton about the lightshow macro.
 
 OPTIONS
     [@profile]
@@ -76,13 +75,17 @@ EXAMPLES
         Set all lights under the profile 'upstairs' to color number 50.
 
     lightshow strobe
-        Run the macro program 'strobe' on the default profile.
+        Run the macro 'strobe' on the default profile.
 
 FILES
     /etc/lightshowrc
             System global Lightshow file.
 
-    .vmmrc  Lightshow config file for the local user.
+    $HOME/.lightshowrc
+            Lightshow config file for the local user.
+
+    $HOME/.lightshow/macros
+            Lightshow macro files for the local user.
 
 CONFIG
     The /etc/lightshowrc and .lightshowrc files will be processed to
