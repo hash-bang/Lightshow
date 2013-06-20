@@ -27,9 +27,10 @@ clean:
 deb:
 	-rm *.deb
 	mkdir $(DEBFACTORY)
-	mkdir -p $(DEBFACTORY)/usr/bin $(DEBFACTORY)/usr/share/man/man1 $(DEBFACTORY)/usr/share/doc/$(SCRIPT)
+	mkdir -p $(DEBFACTORY)/usr/bin $(DEBFACTORY)/usr/share/man/man1 $(DEBFACTORY)/usr/share/doc/$(SCRIPT) $(DEBFACTORY)/usr/share/$(SCRIPT)
 	cp -a $(SCRIPT) $(DEBFACTORY)/usr/bin
 	cp -a docs/* $(DEBFACTORY)/usr/share/doc/$(SCRIPT)
+	cp -a macros $(DEBFACTORY)/usr/share/$(SCRIPT)
 	cp -ar Distro/DEBIAN $(DEBFACTORY)
 	perl -pi -e 's/\$$VERSION/$(VERSION)/' $(DEBFACTORY)/DEBIAN/control
 	pod2man $(SCRIPT) $(DEBFACTORY)/usr/share/man/man1/$(SCRIPT).1
