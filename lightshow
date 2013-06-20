@@ -11,7 +11,7 @@ lightshow - Manage color and dimmable LEDs
 	lightshow <on|off|dim|dimest|bright|brightest>
 	lightshow color <color-number>
 	lightshow list
-	lightshow <program>
+	lightshow <macro>
 
 =head1 COMMANDS
 
@@ -50,15 +50,15 @@ The color code must be between 0 and 255 or 'white'.
 
 List all available macros.
 
-=item B<<program>>
+=item B<<macro>>
 
-Run a macro program.
+Run a Lightshow macro.
 
 You can use 'list' to get a list of available macros.
 
 =item B<version>
 
-Display various version informaiton about the lightshow program.
+Display various version informaiton about the lightshow macro.
 
 =back
 
@@ -113,7 +113,7 @@ Set all lights under the profile 'upstairs' to color number 50.
 
 =item B<lightshow strobe>
 
-Run the macro program 'strobe' on the default profile.
+Run the macro 'strobe' on the default profile.
 
 =back
 
