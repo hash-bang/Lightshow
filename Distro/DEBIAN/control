@@ -3,7 +3,7 @@ Source: lightshow
 Version: $VERSION
 Architecture: all
 Maintainer: Matt Carter <m@ttcarter.com>
-Depends: perl (>= 5.10.0), libwww-perl, libconfig-ini-perl
+Depends: perl (>= 5.10.0), libwww-perl, libconfig-ini-perl, libjson-perl, libsys-syslog-perl, libhttp-server-simple-perl
 Section: utils
 Priority: optional
 Homepage: https://github.com/hash-bang/Lightshow
