@@ -414,7 +414,7 @@ sub lightmacro {
 		$macrofile = $macro;
 	} else { # Short code - might be a macro nested somewhere
 		$macro =~ s/\.ls$//; # Trim .ls prefix if its present
-		for my $dir (@macropath) {
+		for my $dir (reverse @macropath) {
 			my $path = "$dir/$macro.ls";
 			if (-f $path) {
 				$macrofile = $path;
