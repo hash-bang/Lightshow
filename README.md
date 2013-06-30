@@ -64,6 +64,7 @@ OPTIONS
             no actual call to the remote interface is made. This can be
             useful for debugging when combined with '--verbose'.
 
+    -server-port [port]
     -p [port]
             Specify an alternate server port other than the default '8080'.
 
