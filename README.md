@@ -64,6 +64,12 @@ OPTIONS
             no actual call to the remote interface is made. This can be
             useful for debugging when combined with '--verbose'.
 
+    -p [port]
+            Specify an alternate server port other than the default '8080'.
+
+            This is only useful if Lightshow is executed with the 'server'
+            command.
+
     -v
     --verbose
             Be more verbose when outputting information to STDERR. Specify
