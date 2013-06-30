@@ -350,10 +350,14 @@ sub lightkill {
 }
 
 sub lightcolor {
-	my $color = int(shift);
-	if ($color >= 0 && $color <= 255) {
+	my $color = shift;
+	if ($color =~ /^white$/i) {
+		say(2, "Setting color: white");
+		lightdo("\x28\x00\x55");
+	} elsif (int($color) >= 0 && int($color) <= 255) {
+		$color = 0 unless $color;
 		say(2, "Setting color: $color");
-		lightdo("\x20" . chr($color) . "\x55");
+		lightdo("\x20" . chr(int($color)) . "\x55");
 	} else {
 		say(1, "Invalid color code: must be between 0 and 255") ;
 	}
