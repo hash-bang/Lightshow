@@ -11,6 +11,7 @@ lightshow - Manage color and dimmable LEDs
 	lightshow <on|off|dim|dimest|bright|brightest>
 	lightshow color <color-number>
 	lightshow list
+	lightshow server
 	lightshow <macro>
 
 =head1 COMMANDS
@@ -56,6 +57,12 @@ Run a Lightshow macro.
 
 You can use 'list' to get a list of available macros.
 
+=item B<server>
+
+Start the Lightshow REST server and listen for commands.
+
+See SERVER for more information.
+
 =item B<version>
 
 Display various version informaiton about the lightshow macro.
@@ -92,6 +99,40 @@ When enabled Lightshow will continue as normal but no actual call to the remote 
 
 Be more verbose when outputting information to STDERR.
 Specify multiple times to increase verbosity.
+
+=back
+
+=head1 SERVER
+
+When started with the 'server' command lightshow will daemonize as a listening REST server.
+
+By default the server will listen on port 8080 unless it is overridden with '-p'.
+
+THIS FUNCTIONALITY IS EXPERIMENTAL
+
+The easiest way of commanding the server is using Wget:
+
+	wget -qF -O - http://localhost:8080/json/list
+
+
+The following commands are accepted:
+
+
+=over 8
+
+=item B<http://localhost/json/list>
+
+Return a JSON response of the macros supported by Lightshow.
+
+=item B<http://localhost/json/run/$macro>
+
+Run a macro.
+
+Lightshow will actually fork and continue running the macro as a seperate process from the server. This means that macros that run in a loop can continue to do so until stopped or the lightshow process killed.
+
+=item B<http://localhost/json/stop>
+
+Stop running any macros.
 
 =back
 
