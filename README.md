@@ -14,6 +14,7 @@ SYNOPSIS
             lightshow <on|off|dim|dimest|bright|brightest>
             lightshow color <color-number>
             lightshow list
+            lightshow server
             lightshow <macro>
 
 COMMANDS
@@ -39,6 +40,10 @@ COMMANDS
 
             You can use 'list' to get a list of available macros.
 
+    server  Start the Lightshow REST server and listen for commands.
+
+            See SERVER for more information.
+
     version Display various version informaiton about the lightshow macro.
 
 OPTIONS
@@ -63,6 +68,35 @@ OPTIONS
     --verbose
             Be more verbose when outputting information to STDERR. Specify
             multiple times to increase verbosity.
+
+SERVER
+    When started with the 'server' command lightshow will daemonize as a
+    listening REST server.
+
+    By default the server will listen on port 8080 unless it is overridden
+    with '-p'.
+
+    THIS FUNCTIONALITY IS EXPERIMENTAL
+
+    The easiest way of commanding the server is using Wget:
+
+            wget -qF -O - http://localhost:8080/json/list
+
+    The following commands are accepted:
+
+    http://localhost/json/list
+            Return a JSON response of the macros supported by Lightshow.
+
+    http://localhost/json/run/$macro
+            Run a macro.
+
+            Lightshow will actually fork and continue running the macro as a
+            seperate process from the server. This means that macros that
+            run in a loop can continue to do so until stopped or the
+            lightshow process killed.
+
+    http://localhost/json/stop
+            Stop running any macros.
 
 DESCRIPTION
     A command line tool for the manipulation LED lighting systems.
