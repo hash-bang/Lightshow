@@ -270,7 +270,7 @@ Matt Carter <m@ttcarter.com>
 # }}} POD
 # Header {{{
 package lightshow;
-our $VERSION = '0.1.0';
+our $VERSION = '0.2.0';
 
 use Config::IniFiles;
 use Getopt::Long;
