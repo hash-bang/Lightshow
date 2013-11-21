@@ -493,6 +493,15 @@ sub lightmacro {
 		return 0;
 	}
 }
+
+sub lightdisco {
+	my $direction = shift; # 'slow' || 'fast'
+	if ($direction eq /^slow/i) {
+		lightdo("\x43\x00\x55");
+	} elsif ($direction =~ /^fast/i) {
+		lightdo("\x44\x00\x55");
+	}
+}
 # }}}
 # }}}
 # Server functionality {{{
@@ -586,6 +595,18 @@ if ($cmd eq 'on') {
 	lightbright('brightest');
 } elsif ($cmd eq 'list') {
 	say(0, $_) foreach lightmacros();
+} elsif ($cmd eq 'pair') {
+	say(0, 'Repeatedly sending the pairing command (5 times every second).');
+	say(0, 'You need to turn the bulb OFF then ON again.');
+	say(0, 'When it flashes three times pairing has completed');
+	say(0, '');
+	say(0, 'You can test the successful pairing using any other Lightshow command');
+	print 'Attempting to pair';
+	while (1) {
+		lightdisco('fast');
+		print ".";
+		usleep(250000);
+	}
 } elsif ($cmd eq 'server') {
 	lightserver();
 } elsif ($cmd eq 'config') {
