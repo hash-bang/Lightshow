@@ -364,7 +364,7 @@ sub say {
 	my $verbosity = shift;
 	if ($verbose >= $verbosity) {
 		print STDERR @_, "\n";
-		syslog('debug', @_) if $syslog;
+		syslog('debug', "%s", @_) if $syslog;
 	}
 }
 
@@ -380,8 +380,8 @@ sub pause {
 
 sub enabled {
 	# Convert a human string into a bool
-	my $_ = shift;
-	return m/^y|on|enabled|1/;
+	my $on = shift;
+	return $on =~ m/^y|on|enabled|1/;
 }
 # }}} Flow control
 # Core functions {{{
