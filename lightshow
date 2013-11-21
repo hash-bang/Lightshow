@@ -11,6 +11,7 @@ lightshow - Manage color and dimmable LEDs
 	lightshow <on|off|dim|dimest|bright|brightest>
 	lightshow color <color-number>
 	lightshow list
+	lightshow pair
 	lightshow server
 	lightshow <macro>
 
@@ -56,6 +57,10 @@ List all available macros.
 Run a Lightshow macro.
 
 You can use 'list' to get a list of available macros.
+
+=item B<pair>
+
+Show pairing instructions and repeatedly send the pairing command to join a new lightbulb to the controller.
 
 =item B<server>
 
